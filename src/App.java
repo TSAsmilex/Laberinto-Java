@@ -11,15 +11,15 @@ public class App {
 
         // Cargar laberinto
         Labyrinth lab = new Labyrinth();
-        var maze = parseMaze(lines);
+        /* var maze = parseMaze(lines);
         lab.loadMaze(maze);
         lab.solve();
-
-        // Solución -> salida a pantalla. Print del laberinto
-        System.out.println(lab.toString());
+        System.out.println(lab.toString()); */
 
         lines = loadFile("./files/laberinto2");
         lab.loadMaze(parseMaze(lines));
+
+        System.out.println("Laberinto 2 cargado: \n" + lab.toString());
         lab.solve();
         System.out.println(lab.toString());
 
@@ -33,7 +33,7 @@ public class App {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
-        
+
         ArrayList<String> lines = new ArrayList<>();
 
         String curLine;
@@ -48,7 +48,6 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
 
         return lines;
     }
@@ -77,7 +76,7 @@ public class App {
                         break;
                 }
             }
-            
+
             maze.add(mazeLine);
         }
 

@@ -1,4 +1,3 @@
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
@@ -88,7 +87,9 @@ public class Labyrinth {
 
             // No nos hemos movido y no estamos en la salida => dar marcha atrás.
             if (!atExit && lastPosition.equals(currentPosition)) {
-                maze.get(currentPosition.x).set(currentPosition.y, Tile.SPACE);
+                if (maze.get(currentPosition.x).get(currentPosition.y) == Tile.PATH) {
+                    maze.get(currentPosition.x).set(currentPosition.y, Tile.SPACE);
+                }
                 currentPosition = stack.pop();
             }
         }
