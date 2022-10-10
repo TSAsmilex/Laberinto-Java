@@ -110,17 +110,11 @@ public class Labyrinth {
     public Point nextPosition(Point position, Direction dir) {
         int x = position.x, y = position.y;
 
-        if (Direction.UP == dir) {
-            x -= 1;
-        }
-        else if (Direction.RIGHT == dir) {
-            y += 1;
-        }
-        else if (Direction.LEFT == dir) {
-            y -= 1;
-        }
-        else if (Direction.DOWN == dir) {
-            x += 1;
+        switch (dir) {
+            case UP     -> x--;
+            case DOWN   -> x++;
+            case LEFT   -> y--;
+            case RIGHT  -> y++;
         }
 
         var next = new Point();
