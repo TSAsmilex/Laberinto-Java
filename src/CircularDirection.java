@@ -14,18 +14,10 @@ public class CircularDirection {
         int i = 0;
 
         switch (dir) {
-            case UP:
-                i = directions.indexOf(Direction.RIGHT);
-                break;
-            case RIGHT:
-                i = directions.indexOf(Direction.DOWN);
-                break;
-            case DOWN:
-                i = directions.indexOf(Direction.LEFT);
-                break;
-            default:
-                i = directions.indexOf(Direction.UP);
-                break;
+            case UP     -> i = directions.indexOf(Direction.RIGHT);
+            case RIGHT  -> i = directions.indexOf(Direction.DOWN);
+            case DOWN   -> i = directions.indexOf(Direction.LEFT);
+            default     -> i = directions.indexOf(Direction.UP);
         }
 
         for (int j = 0; j < directions.size(); j++) {
