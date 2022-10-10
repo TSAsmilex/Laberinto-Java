@@ -6,22 +6,26 @@ import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        // Abrir archivos
-        var lines = loadFile("./files/laberinto1");
-
-        // Cargar laberinto
         Labyrinth lab = new Labyrinth();
+
+        // ──────────────────────────────────────────── LABERINTO 1 ─────
+
+        var lines = loadFile("./files/laberinto1");
         var maze = parseMaze(lines);
         lab.loadMaze(maze);
+
+        System.out.println("Laberinto 1: \n" + lab.toString());
         lab.solve();
-        System.out.println(lab.toString());
+        System.out.println("Solución: \n" + lab.toString());
+
+        // ──────────────────────────────────────────── LABERINTO 2 ─────
 
         lines = loadFile("./files/laberinto2");
         lab.loadMaze(parseMaze(lines));
 
         System.out.println("Laberinto 2 cargado: \n" + lab.toString());
         lab.solve();
-        System.out.println(lab.toString());
+        System.out.println("Solución: \n" + lab.toString());
 
     }
 
