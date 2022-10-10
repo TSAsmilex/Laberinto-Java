@@ -38,6 +38,37 @@ public class Labyrinth {
 
     // ──────────────────────────────────────────────────────── ENTRADA SALIDA ─────
 
+    public static ArrayList<ArrayList<Tile>> parseMaze (ArrayList<String> lines) {
+        ArrayList<ArrayList<Tile>> maze = new ArrayList<>();
+
+        for (String line: lines) {
+            var mazeLine = new ArrayList<Tile>();
+
+            for (int i = 0; i < line.length(); i++) {
+                char c = line.charAt(i);
+
+                switch (c) {
+                    case '#':
+                        mazeLine.add(Tile.WALL);
+                        break;
+                    case ' ':
+                        mazeLine.add(Tile.SPACE);
+                        break;
+                    case 'E':
+                        mazeLine.add(Tile.ENTRANCE);
+                        break;
+                    case 'S':
+                        mazeLine.add(Tile.EXIT);
+                        break;
+                }
+            }
+
+            maze.add(mazeLine);
+        }
+
+        return maze;
+    }
+
     public void loadMaze(ArrayList<ArrayList<Tile>> maze) {
         this.maze.clear();
         this.stack.clear();

@@ -11,7 +11,7 @@ public class App {
         // ──────────────────────────────────────────── LABERINTO 1 ─────
 
         var lines = loadFile("./files/laberinto1");
-        var maze = parseMaze(lines);
+        var maze = Labyrinth.parseMaze(lines);
         lab.loadMaze(maze);
 
         System.out.println("Laberinto 1: \n" + lab.toString());
@@ -21,12 +21,12 @@ public class App {
         // ──────────────────────────────────────────── LABERINTO 2 ─────
 
         lines = loadFile("./files/laberinto2");
-        lab.loadMaze(parseMaze(lines));
+        maze = Labyrinth.parseMaze(lines);
+        lab.loadMaze(maze);
 
         System.out.println("Laberinto 2 cargado: \n" + lab.toString());
         lab.solve();
         System.out.println("Solución: \n" + lab.toString());
-
     }
 
     public static ArrayList<String> loadFile (String path) {
@@ -40,12 +40,12 @@ public class App {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        String curLine;
-
         try {
-            while ((curLine = bufferedReader.readLine()) != null){
+            String current;
+
+            while ((current = bufferedReader.readLine()) != null){
                 //process the line as required
-                lines.add(curLine);
+                lines.add(current);
             }
 
             bufferedReader.close();
@@ -54,37 +54,5 @@ public class App {
         }
 
         return lines;
-    }
-
-    public static ArrayList<ArrayList<Tile>> parseMaze (ArrayList<String> lines) {
-        ArrayList<ArrayList<Tile>> maze = new ArrayList<>();
-
-        for (String line: lines) {
-            var mazeLine = new ArrayList<Tile>();
-
-            for (int i = 0; i < line.length(); i++) {
-                char c = line.charAt(i);
-
-                switch (c) {
-                    case '#':
-                        mazeLine.add(Tile.WALL);
-                        break;
-                    case ' ':
-                        mazeLine.add(Tile.SPACE);
-                        break;
-                    case 'E':
-                        mazeLine.add(Tile.ENTRANCE);
-                        break;
-                    case 'S':
-                        mazeLine.add(Tile.EXIT);
-                        break;
-                }
-            }
-
-            maze.add(mazeLine);
-        }
-
-
-        return maze;
     }
 }
