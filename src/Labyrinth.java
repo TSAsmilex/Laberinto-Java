@@ -144,18 +144,10 @@ public class Labyrinth {
                 char c = line.charAt(i);
 
                 switch (c) {
-                    case '#':
-                        mazeLine.add(Tile.WALL);
-                        break;
-                    case ' ':
-                        mazeLine.add(Tile.SPACE);
-                        break;
-                    case 'E':
-                        mazeLine.add(Tile.ENTRANCE);
-                        break;
-                    case 'S':
-                        mazeLine.add(Tile.EXIT);
-                        break;
+                    case '#' -> mazeLine.add(Tile.WALL);
+                    case ' ' -> mazeLine.add(Tile.SPACE);
+                    case 'E' -> mazeLine.add(Tile.ENTRANCE);
+                    case 'S' -> mazeLine.add(Tile.EXIT);
                 }
             }
 
@@ -200,21 +192,11 @@ public class Labyrinth {
         for (var line: maze) {
             for (var tile: line) {
                 switch (tile) {
-                    case WALL:
-                        salida += "#";
-                        break;
-                    case SPACE:
-                        salida += " ";
-                        break;
-                    case PATH:
-                        salida += ".";
-                        break;
-                    case ENTRANCE:
-                        salida += "E";
-                        break;
-                    case EXIT:
-                        salida += "S";
-                        break;
+                    case WALL     -> salida += "#";
+                    case SPACE    -> salida += " ";
+                    case PATH     -> salida += ".";
+                    case ENTRANCE -> salida += "E";
+                    case EXIT     -> salida += "S";
                 }
             }
             salida += "\n";
