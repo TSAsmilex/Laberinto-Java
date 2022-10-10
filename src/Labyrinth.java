@@ -1,32 +1,34 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Stack;
 
 enum Tile {
-    WALL, 
-    SPACE, 
-    VISITED, 
-    ENTRANCE, 
+    WALL,
+    SPACE,
+    PATH,
+    ENTRANCE,
     EXIT
 };
 
 enum Direction {
-    UP, 
-    DOWN, 
-    LEFT, 
+    UP,
+    DOWN,
+    LEFT,
     RIGHT
 }
 
 public class Labyrinth {
     private ArrayList<ArrayList<Tile>> maze;
-    
-    private Point currentPosition = new Point(); 
+
+    private Point currentPosition = new Point();
     private Direction currentOrientation;
 
     private Stack<Point> stack = new Stack<>();
+    private HashSet<Point> visited = new HashSet<>();
 
     private Point entrance = new Point();
-    private Point exit = new Point(); 
+    private Point exit = new Point();
 
 
     // ───────────────────────────────────────────────────────── CONSTRUCTORES ─────
@@ -37,7 +39,6 @@ public class Labyrinth {
 
     // ──────────────────────────────────────────────────────── ENTRADA SALIDA ─────
 
-
     public void loadMaze(ArrayList<ArrayList<Tile>> maze) {
         this.maze = maze;
 
@@ -47,13 +48,12 @@ public class Labyrinth {
                     this.entrance.x = i;
                     this.entrance.y = j;
 
-                    this.currentPosition.x = entrance.x;
-                    this.currentPosition.y = entrance.y;
+                    this.currentPosition = entrance;
 
                     this.currentOrientation = Direction.DOWN;
                 }
                 else if (maze.get(i).get(j) == Tile.EXIT) {
-                    this.exit.x = i; 
+                    this.exit.x = i;
                     this.exit.y = j;
                 }
             }
@@ -63,37 +63,39 @@ public class Labyrinth {
     public void solve() {
         var atExit = false;
 
-        while (!atExit) {      
+        while (!atExit) {
             var lastPosition = new Point();
-            lastPosition.x = this.currentPosition.x;
-            lastPosition.y = this.currentPosition.y;
+            lastPosition = this.currentPosition;
 
             var priorities = CircularDirection.getDirections(currentOrientation);
-            
+
+            // Escoge una dirección y muévete hacia allí.
+            // Orden: Derecha - Arriba - Izquierda - Detrás.
             while (!priorities.isEmpty()) {
-                var nextDir = priorities.poll(); 
+                var nextDir = priorities.poll();
 
                 if (canMove(nextDir)) {
                     var posiblePosition = nextPosition(currentPosition, nextDir);
 
-                    if (maze.get(posiblePosition.x).get(posiblePosition.y) != Tile.VISITED) {
+                    if (!visited.contains(posiblePosition)) {
                         move(nextDir);
-                        stack.add(currentPosition);
                         priorities.clear();
                     }
                 }
             }
 
-            atExit = currentPosition.x == exit.x && currentPosition.y == exit.y;
-            
-            if (!atExit && lastPosition.x == currentPosition.x && currentPosition.y == lastPosition.y) {
+            atExit = currentPosition.equals(exit);
+
+            // No nos hemos movido y no estamos en la salida => dar marcha atrás.
+            if (!atExit && lastPosition.equals(currentPosition)) {
+                maze.get(currentPosition.x).set(currentPosition.y, Tile.SPACE);
                 currentPosition = stack.pop();
             }
         }
     }
 
     public String toString() {
-        String salida = new String(); 
+        String salida = new String();
 
         for (var line: maze) {
             for (var tile: line) {
@@ -104,7 +106,7 @@ public class Labyrinth {
                     case SPACE:
                         salida += " ";
                         break;
-                    case VISITED:
+                    case PATH:
                         salida += ".";
                         break;
                     case ENTRANCE:
@@ -122,13 +124,16 @@ public class Labyrinth {
     }
 
     // ──────────────────────────────────────────────────────────── MOVIMIENTO ─────
-    
+
 
     public void move (Direction dir) {
         this.stack.push(currentPosition);
+
         this.currentOrientation = dir;
-        this.currentPosition = nextPosition(currentPosition, dir);
-        this.maze.get(currentPosition.x).set(currentPosition.y, Tile.VISITED);
+        this.currentPosition    = nextPosition(currentPosition, dir);
+
+        this.visited.add(currentPosition);
+        this.maze.get(currentPosition.x).set(currentPosition.y, Tile.PATH);
     }
 
     public boolean canMove (Direction dir) {
