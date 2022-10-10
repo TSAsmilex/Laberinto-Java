@@ -32,66 +32,14 @@ public class Labyrinth {
 
     // ───────────────────────────────────────────────────────── CONSTRUCTORES ─────
 
+
     public Labyrinth() {
         maze = new ArrayList<>();
     }
 
-    // ──────────────────────────────────────────────────────── ENTRADA SALIDA ─────
 
-    public static ArrayList<ArrayList<Tile>> parseMaze (ArrayList<String> lines) {
-        ArrayList<ArrayList<Tile>> maze = new ArrayList<>();
+    // ──────────────────────────────────────────────────────────── RESOLUCION ─────
 
-        for (String line: lines) {
-            var mazeLine = new ArrayList<Tile>();
-
-            for (int i = 0; i < line.length(); i++) {
-                char c = line.charAt(i);
-
-                switch (c) {
-                    case '#':
-                        mazeLine.add(Tile.WALL);
-                        break;
-                    case ' ':
-                        mazeLine.add(Tile.SPACE);
-                        break;
-                    case 'E':
-                        mazeLine.add(Tile.ENTRANCE);
-                        break;
-                    case 'S':
-                        mazeLine.add(Tile.EXIT);
-                        break;
-                }
-            }
-
-            maze.add(mazeLine);
-        }
-
-        return maze;
-    }
-
-    public void loadMaze(ArrayList<ArrayList<Tile>> maze) {
-        this.maze.clear();
-        this.stack.clear();
-        this.visited.clear();
-        this.maze = maze;
-
-        for (int i = 0; i < maze.size(); i++) {
-            for (int j = 0; j < maze.get(i).size(); j++) {
-                if (maze.get(i).get(j) == Tile.ENTRANCE) {
-                    this.entrance.x = i;
-                    this.entrance.y = j;
-
-                    this.currentPosition = entrance;
-
-                    this.currentOrientation = Direction.DOWN;
-                }
-                else if (maze.get(i).get(j) == Tile.EXIT) {
-                    this.exit.x = i;
-                    this.exit.y = j;
-                }
-            }
-        }
-    }
 
     public void solve() {
         var atExit = false;
@@ -129,37 +77,6 @@ public class Labyrinth {
         }
     }
 
-    public String toString() {
-        String salida = new String();
-
-        for (var line: maze) {
-            for (var tile: line) {
-                switch (tile) {
-                    case WALL:
-                        salida += "#";
-                        break;
-                    case SPACE:
-                        salida += " ";
-                        break;
-                    case PATH:
-                        salida += ".";
-                        break;
-                    case ENTRANCE:
-                        salida += "E";
-                        break;
-                    case EXIT:
-                        salida += "S";
-                        break;
-                }
-            }
-            salida += "\n";
-        }
-
-        return salida;
-    }
-
-    // ──────────────────────────────────────────────────────────── MOVIMIENTO ─────
-
 
     public void move (Direction dir) {
         this.stack.push(currentPosition);
@@ -170,6 +87,7 @@ public class Labyrinth {
         this.visited.add(currentPosition);
         this.maze.get(currentPosition.x).set(currentPosition.y, Tile.PATH);
     }
+
 
     public boolean canMove (Direction dir) {
         var next = nextPosition(currentPosition, dir);
@@ -210,5 +128,98 @@ public class Labyrinth {
         next.y = y;
 
         return next;
+    }
+
+
+    // ─────────────────────────────────────────────────── PARSING AND LOADING ─────
+
+
+    public static ArrayList<ArrayList<Tile>> parseMaze (ArrayList<String> lines) {
+        ArrayList<ArrayList<Tile>> maze = new ArrayList<>();
+
+        for (String line: lines) {
+            var mazeLine = new ArrayList<Tile>();
+
+            for (int i = 0; i < line.length(); i++) {
+                char c = line.charAt(i);
+
+                switch (c) {
+                    case '#':
+                        mazeLine.add(Tile.WALL);
+                        break;
+                    case ' ':
+                        mazeLine.add(Tile.SPACE);
+                        break;
+                    case 'E':
+                        mazeLine.add(Tile.ENTRANCE);
+                        break;
+                    case 'S':
+                        mazeLine.add(Tile.EXIT);
+                        break;
+                }
+            }
+
+            maze.add(mazeLine);
+        }
+
+        return maze;
+    }
+
+
+    public void loadMaze(ArrayList<ArrayList<Tile>> maze) {
+        this.maze.clear();
+        this.stack.clear();
+        this.visited.clear();
+        this.maze = maze;
+
+        for (int i = 0; i < maze.size(); i++) {
+            for (int j = 0; j < maze.get(i).size(); j++) {
+                if (maze.get(i).get(j) == Tile.ENTRANCE) {
+                    this.entrance.x = i;
+                    this.entrance.y = j;
+
+                    this.currentPosition = entrance;
+
+                    this.currentOrientation = Direction.DOWN;
+                }
+                else if (maze.get(i).get(j) == Tile.EXIT) {
+                    this.exit.x = i;
+                    this.exit.y = j;
+                }
+            }
+        }
+    }
+
+
+    // ────────────────────────────────────────────────────────────── PRINTING ─────
+
+
+    public String toString() {
+        String salida = new String();
+
+        for (var line: maze) {
+            for (var tile: line) {
+                switch (tile) {
+                    case WALL:
+                        salida += "#";
+                        break;
+                    case SPACE:
+                        salida += " ";
+                        break;
+                    case PATH:
+                        salida += ".";
+                        break;
+                    case ENTRANCE:
+                        salida += "E";
+                        break;
+                    case EXIT:
+                        salida += "S";
+                        break;
+                }
+            }
+            salida += "\n";
+        }
+
+        return salida;
     }
 }
