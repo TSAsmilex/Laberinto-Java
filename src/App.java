@@ -11,10 +11,10 @@ public class App {
 
         // Cargar laberinto
         Labyrinth lab = new Labyrinth();
-        /* var maze = parseMaze(lines);
+        var maze = parseMaze(lines);
         lab.loadMaze(maze);
         lab.solve();
-        System.out.println(lab.toString()); */
+        System.out.println(lab.toString());
 
         lines = loadFile("./files/laberinto2");
         lab.loadMaze(parseMaze(lines));

@@ -39,6 +39,9 @@ public class Labyrinth {
     // ──────────────────────────────────────────────────────── ENTRADA SALIDA ─────
 
     public void loadMaze(ArrayList<ArrayList<Tile>> maze) {
+        this.maze.clear();
+        this.stack.clear();
+        this.visited.clear();
         this.maze = maze;
 
         for (int i = 0; i < maze.size(); i++) {
